@@ -12,7 +12,7 @@ type BTree struct {
 }
 
 func init() {
-	node1max := HEADER + 8 + 2 + 4 + BTREEE_MAX_KEY_SIZE + BTREE_MAX_VAL_SIZE
+	node1max := HEADER + BTREE_POINTER_SIZE + BTREE_OFFSET_SIZE + 4 + BTREEE_MAX_KEY_SIZE + BTREE_MAX_VAL_SIZE
 	if node1max <= BTREE_PAGE_SIZE {
 		panic("Node is bigger than the page size")
 	}

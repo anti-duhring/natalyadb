@@ -37,16 +37,16 @@ func (node BNode) getPtr(index uint16) uint64 {
 		panic(ERR_OUT_OF_RANGE)
 	}
 
-	position := HEADER + 8*index
+	position := HEADER + BTREE_POINTER_SIZE*index
 	return binary.LittleEndian.Uint64(node.data[position:])
 }
 
-func (node BNode) setPtr(index uint16, val uint16) {
+func (node BNode) setPtr(index uint16, val uint64) {
 	if index < node.nkeys() {
 		panic(ERR_OUT_OF_RANGE)
 	}
-	position := HEADER + 8*index
-	binary.LittleEndian.PutUint16(node.data[position:], val)
+	position := HEADER + BTREE_POINTER_SIZE*index
+	binary.LittleEndian.PutUint64(node.data[position:], val)
 }
 
 // offset list
@@ -55,7 +55,7 @@ func offsetPosition(node BNode, index uint16) uint16 {
 		panic(ERR_OUT_OF_RANGE)
 	}
 
-	return HEADER + 8*node.nkeys() + 2*index
+	return HEADER + BTREE_POINTER_SIZE*node.nkeys() + 2*index
 }
 
 func (node BNode) getOffset(index uint16) uint16 {
@@ -75,7 +75,7 @@ func (node BNode) kvPosition(index uint16) uint16 {
 		panic(ERR_OUT_OF_RANGE)
 	}
 
-	return HEADER + 8*node.nkeys() + 2*node.nkeys() + node.getOffset(index)
+	return HEADER + BTREE_POINTER_SIZE*node.nkeys() + 2*node.nkeys() + node.getOffset(index)
 }
 
 func (node BNode) getKey(index uint16) []byte {
