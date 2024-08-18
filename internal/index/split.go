@@ -1,4 +1,4 @@
-package btree
+package index
 
 import . "github.com/anti-duhring/natalyadb/internal/config"
 

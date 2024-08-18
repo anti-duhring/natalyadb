@@ -1,4 +1,4 @@
-package btree
+package index
 
 import (
 	"bytes"
@@ -45,7 +45,7 @@ func nodeAppendRange(
 	old BNode,
 	dstNew uint16, srcOld uint16, n uint16,
 ) {
-	if srcOld+n <= old.nkeys() || dstNew+n <= new.nkeys() {
+	if srcOld+n > old.nkeys() || dstNew+n > new.nkeys() {
 		panic(ERR_OUT_OF_RANGE)
 	}
 	if n == 0 {

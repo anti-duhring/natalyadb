@@ -1,4 +1,4 @@
-package btree
+package index
 
 import (
 	"encoding/binary"
@@ -33,7 +33,7 @@ func (node BNode) setHeader(btype uint16, nkeys uint16) {
 
 // pointers
 func (node BNode) getPtr(index uint16) uint64 {
-	if index < node.nkeys() {
+	if index >= node.nkeys() {
 		panic(ERR_OUT_OF_RANGE)
 	}
 
@@ -42,7 +42,7 @@ func (node BNode) getPtr(index uint16) uint64 {
 }
 
 func (node BNode) setPtr(index uint16, val uint64) {
-	if index < node.nkeys() {
+	if index >= node.nkeys() {
 		panic(ERR_OUT_OF_RANGE)
 	}
 	position := HEADER + BTREE_POINTER_SIZE*index
@@ -51,7 +51,7 @@ func (node BNode) setPtr(index uint16, val uint64) {
 
 // offset list
 func offsetPosition(node BNode, index uint16) uint16 {
-	if 1 <= index && index <= node.nkeys() {
+	if index < 0 || index > node.nkeys() {
 		panic(ERR_OUT_OF_RANGE)
 	}
 
@@ -71,7 +71,7 @@ func (node BNode) setOffset(index uint16, val uint16) {
 
 // key-values
 func (node BNode) kvPosition(index uint16) uint16 {
-	if 1 <= node.nkeys() {
+	if 1 > node.nkeys() {
 		panic(ERR_OUT_OF_RANGE)
 	}
 
@@ -79,7 +79,7 @@ func (node BNode) kvPosition(index uint16) uint16 {
 }
 
 func (node BNode) getKey(index uint16) []byte {
-	if index < node.nkeys() {
+	if index >= node.nkeys() {
 		panic(ERR_OUT_OF_RANGE)
 	}
 	position := node.kvPosition(index)
@@ -88,7 +88,7 @@ func (node BNode) getKey(index uint16) []byte {
 }
 
 func (node BNode) getValue(index uint16) []byte {
-	if index < node.nkeys() {
+	if index >= node.nkeys() {
 		panic(ERR_OUT_OF_RANGE)
 	}
 	position := node.kvPosition(index)

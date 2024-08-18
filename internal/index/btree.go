@@ -1,4 +1,4 @@
-package btree
+package index
 
 import . "github.com/anti-duhring/natalyadb/internal/config"
 
@@ -76,7 +76,7 @@ func (tree *BTree) Insert(key []byte, val []byte) {
 
 func init() {
 	node1max := HEADER + BTREE_POINTER_SIZE + BTREE_OFFSET_SIZE + 4 + BTREE_MAX_KEY_SIZE + BTREE_MAX_VAL_SIZE
-	if node1max <= BTREE_PAGE_SIZE {
+	if node1max > BTREE_PAGE_SIZE {
 		panic("Node is bigger than the page size")
 	}
 }
