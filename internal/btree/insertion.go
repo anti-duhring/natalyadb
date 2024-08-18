@@ -161,3 +161,17 @@ func nodeReplaceChildLinks(
 	}
 	nodeAppendRange(new, old, index+inc, index+1, old.nkeys()-(index+1))
 }
+
+// replace 2 adjacent links with a single link
+func nodeReplace2Child(
+	new BNode,
+	old BNode,
+	index uint16,
+	pointer uint64,
+	key []byte,
+) {
+	new.setHeader(BNODE_NODE, old.nkeys()-1)
+	nodeAppendRange(new, old, 0, 0, index)
+	nodeAppendKV(new, index, pointer, key, nil)
+	nodeAppendRange(new, old, index+1, index+2, old.nkeys()-(index+2))
+}
